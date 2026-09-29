@@ -18,11 +18,77 @@
             --rg-darker: #050505;
             --rg-card: #141414;
             --rg-border: #2a2a2a;
+            --rg-muted: #8b8b8b;
+            --rg-gradient: linear-gradient(135deg, #ff4d5e 0%, var(--rg-red) 45%, var(--rg-red-dark) 100%);
+            --rg-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+            --rg-shadow-red: 0 10px 30px rgba(220, 53, 69, 0.18);
+            --rg-ease: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 90px;
         }
 
         body {
             background-color: var(--rg-darker);
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: #e6e6e6;
+            overflow-x: hidden;
+        }
+
+        /* Compensa o navbar fixo ao navegar por âncoras */
+        section[id], div[id="agendar"] {
+            scroll-margin-top: 90px;
+        }
+
+        ::selection {
+            background: rgba(220, 53, 69, 0.4);
+            color: #fff;
+        }
+
+        /* Scrollbar customizada */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--rg-darker);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--rg-red), var(--rg-red-dark));
+            border-radius: 10px;
+            border: 2px solid var(--rg-darker);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--rg-red);
+        }
+
+        /* Foco visível e consistente (acessibilidade) */
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible,
+        select:focus-visible,
+        textarea:focus-visible {
+            outline: 2px solid var(--rg-red);
+            outline-offset: 3px;
+            border-radius: 4px;
+        }
+
+        /* Transições globais suaves */
+        .btn, .form-control, .form-select, .nav-link, .badge {
+            transition: all 0.25s var(--rg-ease);
+        }
+
+        .text-gradient {
+            background: var(--rg-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
         }
 
         .rg-navbar {
@@ -35,17 +101,51 @@
             font-weight: 800;
             font-size: 1.5rem;
             letter-spacing: -0.5px;
+            transition: transform 0.3s var(--rg-ease);
+        }
+
+        .rg-brand:hover {
+            transform: scale(1.03);
         }
 
         .rg-brand i {
             color: var(--rg-red);
+            filter: drop-shadow(0 0 8px rgba(220, 53, 69, 0.6));
+        }
+
+        /* Barra de progresso de leitura no topo */
+        .rg-scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            width: 0;
+            background: var(--rg-gradient);
+            z-index: 1030;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 12px rgba(220, 53, 69, 0.8);
         }
 
         .rg-hero {
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 50%, #0a0a0a 100%);
+            background:
+                radial-gradient(ellipse 80% 60% at 50% -10%, rgba(220, 53, 69, 0.14), transparent),
+                linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 50%, #0a0a0a 100%);
             min-height: 90vh;
             position: relative;
             overflow: hidden;
+        }
+
+        /* Grade sutil de fundo no hero */
+        .rg-hero .rg-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(220, 53, 69, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(220, 53, 69, 0.05) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 70% 70% at 50% 40%, #000 30%, transparent 75%);
+            -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 40%, #000 30%, transparent 75%);
+            pointer-events: none;
         }
 
         .rg-hero::before {
@@ -71,19 +171,41 @@
         }
 
         .rg-btn-primary {
-            background: linear-gradient(135deg, var(--rg-red) 0%, var(--rg-red-dark) 100%);
+            background: var(--rg-gradient);
             border: none;
             font-weight: 600;
             padding: 12px 32px;
             border-radius: 8px;
-            transition: all 0.3s ease;
+            transition: all 0.3s var(--rg-ease);
             box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Brilho que desliza sobre o botão */
+        .rg-btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -75%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+            transform: skewX(-20deg);
+            transition: left 0.6s var(--rg-ease);
+        }
+
+        .rg-btn-primary:hover::after {
+            left: 130%;
         }
 
         .rg-btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(220, 53, 69, 0.4);
-            background: linear-gradient(135deg, #e74c3c 0%, var(--rg-red) 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(220, 53, 69, 0.45);
+        }
+
+        .rg-btn-primary:active {
+            transform: translateY(-1px);
         }
 
         .rg-btn-outline {
@@ -92,75 +214,193 @@
             font-weight: 600;
             padding: 10px 28px;
             border-radius: 8px;
-            transition: all 0.3s ease;
+            transition: all 0.3s var(--rg-ease);
             background: transparent;
         }
 
         .rg-btn-outline:hover {
             background: var(--rg-red);
             color: white;
-            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+            border-color: var(--rg-red);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(220, 53, 69, 0.35);
         }
 
         .rg-card {
             background: var(--rg-card);
             border: 1px solid var(--rg-border);
             border-radius: 16px;
-            transition: all 0.3s ease;
-        }
-
-        .rg-card:hover {
-            border-color: var(--rg-red);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(220, 53, 69, 0.15);
-        }
-
-        .rg-service-card {
+            transition: all 0.35s var(--rg-ease);
             position: relative;
             overflow: hidden;
         }
 
-        .rg-service-card.featured {
-            border: 2px solid var(--rg-red);
+        /* Brilho superior que acende no hover */
+        .rg-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--rg-gradient);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s var(--rg-ease);
         }
 
-        .rg-service-card.featured::before {
-            content: 'MAIS POPULAR';
+        .rg-card:hover {
+            border-color: rgba(220, 53, 69, 0.6);
+            transform: translateY(-6px);
+            box-shadow: var(--rg-shadow), var(--rg-shadow-red);
+        }
+
+        .rg-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        /* ============ CARDS DE SERVIÇOS (alinhamento perfeito) ============ */
+        .rg-service-card {
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Wrapper interno em flex para empurrar o botão ao fim */
+        .rg-service-card .rg-service-body {
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 auto;
+            height: 100%;
+        }
+
+        /* Cabeçalho com altura fixa: título e descrição sempre na mesma linha */
+        .rg-service-card .rg-service-head {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 148px;
+            justify-content: flex-start;
+        }
+
+        .rg-service-card .rg-service-title {
+            font-weight: 700;
+            margin: 0;
+            font-size: 1.2rem;
+            line-height: 1.3;
+            min-height: 2.6em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .rg-service-card .rg-service-desc {
+            color: var(--rg-muted);
+            font-size: 0.85rem;
+            margin: 6px 0 0;
+            min-height: 2.6em;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        /* Bloco de preço com altura fixa */
+        .rg-service-card .rg-service-price-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 92px;
+            margin-bottom: 20px;
+            padding: 10px 0;
+            border-top: 1px solid var(--rg-border);
+            border-bottom: 1px solid var(--rg-border);
+        }
+
+        /* Lista de recursos cresce para ocupar o espaço restante */
+        .rg-service-card .rg-feature-list {
+            flex: 1 1 auto;
+        }
+
+        /* Botão sempre no rodapé do card */
+        .rg-service-card .rg-service-cta {
+            margin-top: auto;
+            position: relative;
+            z-index: 2;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .rg-service-card.featured {
+            border: 2px solid var(--rg-red);
+            background:
+                radial-gradient(ellipse 100% 50% at 50% 0%, rgba(220, 53, 69, 0.14), transparent),
+                var(--rg-card);
+            box-shadow: 0 0 0 1px rgba(220, 53, 69, 0.2), 0 12px 40px rgba(220, 53, 69, 0.12);
+        }
+
+        .rg-service-card.featured::after {
+            content: '';
             position: absolute;
             top: 20px;
             right: -35px;
-            background: var(--rg-red);
+            background: var(--rg-gradient);
             color: white;
             padding: 5px 40px;
             font-size: 0.7rem;
             font-weight: 700;
             transform: rotate(45deg);
             z-index: 10;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Destaque visual do serviço em destaque */
+        .rg-service-card.featured .rg-service-title {
+            color: #fff;
         }
 
         .rg-price {
             font-size: 2.5rem;
             font-weight: 800;
-            color: var(--rg-red);
+            line-height: 1;
+            background: var(--rg-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
         }
 
         .rg-price small {
-            font-size: 1rem;
-            color: #888;
-            font-weight: 400;
+            font-size: 1.1rem;
+            color: var(--rg-muted);
+            font-weight: 600;
+            -webkit-text-fill-color: var(--rg-muted);
         }
 
         .rg-feature-list {
             list-style: none;
             padding: 0;
+            margin: 0;
         }
 
         .rg-feature-list li {
-            padding: 8px 0;
+            padding: 9px 0;
             border-bottom: 1px solid var(--rg-border);
             display: flex;
             align-items: center;
             gap: 10px;
+            font-size: 0.92rem;
+            color: #d4d4d4;
+            transition: color 0.2s ease, padding-left 0.25s var(--rg-ease);
+        }
+
+        .rg-feature-list li:hover {
+            color: #fff;
+            padding-left: 4px;
         }
 
         .rg-feature-list li:last-child {
@@ -169,6 +409,8 @@
 
         .rg-feature-list li i {
             color: var(--rg-red);
+            flex-shrink: 0;
+            font-size: 0.95rem;
         }
 
         .rg-step {
@@ -196,27 +438,31 @@
             border-radius: 8px;
             padding: 12px 20px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.25s var(--rg-ease);
             text-align: center;
             font-weight: 500;
+            user-select: none;
         }
 
-        .rg-time-slot:hover {
+        .rg-time-slot:hover:not(.disabled) {
             border-color: var(--rg-red);
             background: rgba(220, 53, 69, 0.1);
+            transform: translateY(-2px);
         }
 
         .rg-time-slot.selected {
-            background: var(--rg-red);
+            background: var(--rg-gradient);
             border-color: var(--rg-red);
             color: white;
-            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+            transform: translateY(-2px);
         }
 
         .rg-time-slot.disabled {
             opacity: 0.4;
             cursor: not-allowed;
             background: var(--rg-darker);
+            text-decoration: line-through;
         }
 
         .rg-form-control {
@@ -225,6 +471,15 @@
             color: white !important;
             border-radius: 8px !important;
             padding: 12px 16px !important;
+            transition: all 0.25s var(--rg-ease);
+        }
+
+        .rg-form-control::placeholder {
+            color: #6b6b6b !important;
+        }
+
+        .rg-form-control:hover {
+            border-color: #3d3d3d !important;
         }
 
         .rg-form-control:focus {
@@ -232,28 +487,17 @@
             box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15) !important;
         }
 
+        /* Deixa o select nativo com seta vermelha no tema escuro */
+        .rg-form-control[type="date"]::-webkit-calendar-picker-indicator,
+        .rg-form-control::-webkit-calendar-picker-indicator {
+            filter: invert(72%) sepia(35%) saturate(1200%) hue-rotate(340deg) brightness(95%);
+            cursor: pointer;
+        }
+
         .rg-form-label {
             font-weight: 600;
             margin-bottom: 8px;
             color: #ccc;
-        }
-
-        .rg-stat {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .rg-stat-number {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--rg-red);
-        }
-
-        .rg-stat-label {
-            color: #888;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         .rg-footer {
@@ -326,7 +570,21 @@
             font-weight: 500;
             padding: 8px 16px !important;
             border-radius: 6px;
-            transition: all 0.2s ease;
+            transition: all 0.25s var(--rg-ease);
+            position: relative;
+        }
+
+        .rg-nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 16px;
+            right: 16px;
+            height: 2px;
+            background: var(--rg-gradient);
+            transform: scaleX(0);
+            transition: transform 0.3s var(--rg-ease);
+            border-radius: 2px;
         }
 
         .rg-nav-link:hover, .rg-nav-link.active {
@@ -334,23 +592,63 @@
             background: rgba(220, 53, 69, 0.15);
         }
 
+        .rg-nav-link:hover::after, .rg-nav-link.active::after {
+            transform: scaleX(1);
+        }
+
         .rg-section-title {
             font-size: 2.5rem;
             font-weight: 800;
             margin-bottom: 10px;
+            letter-spacing: -0.5px;
+            position: relative;
+            display: inline-block;
         }
 
         .rg-section-subtitle {
-            color: #888;
+            color: var(--rg-muted);
             font-size: 1.1rem;
+            max-width: 620px;
+            margin: 0 auto;
         }
 
         .rg-divider {
             height: 4px;
             width: 60px;
-            background: linear-gradient(90deg, var(--rg-red), var(--rg-red-dark));
+            background: var(--rg-gradient);
             border-radius: 2px;
             margin: 20px auto;
+            box-shadow: 0 0 12px rgba(220, 53, 69, 0.6);
+        }
+
+        .rg-stat {
+            text-align: center;
+            padding: 20px 12px;
+            border-radius: 12px;
+            transition: all 0.3s var(--rg-ease);
+        }
+
+        .rg-stat:hover {
+            background: rgba(220, 53, 69, 0.06);
+            transform: translateY(-3px);
+        }
+
+        .rg-stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            background: var(--rg-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        .rg-stat-label {
+            color: var(--rg-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .rg-toast {
@@ -373,7 +671,19 @@
         }
 
         .rg-animate {
-            animation: rgFadeIn 0.6s ease forwards;
+            animation: rgFadeIn 0.6s var(--rg-ease) forwards;
+        }
+
+        /* Revela elementos ao entrar na viewport */
+        .rg-reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.7s var(--rg-ease), transform 0.7s var(--rg-ease);
+        }
+
+        .rg-reveal.rg-visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .rg-car-icon {
@@ -388,19 +698,34 @@
 
         /* Novos estilos para serviços e marketing */
         .rg-service-icon {
-            width: 70px;
-            height: 70px;
+            width: 68px;
+            height: 68px;
             background: linear-gradient(135deg, rgba(220, 53, 69, 0.2), rgba(220, 53, 69, 0.05));
-            border-radius: 16px;
+            border: 1px solid rgba(220, 53, 69, 0.25);
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
+            margin: 0 auto 14px;
+            flex-shrink: 0;
+            transition: all 0.4s var(--rg-ease);
         }
 
         .rg-service-icon i {
-            font-size: 2rem;
+            font-size: 1.9rem;
             color: var(--rg-red);
+            transition: transform 0.4s var(--rg-ease);
+        }
+
+        .rg-service-card:hover .rg-service-icon {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.4), rgba(220, 53, 69, 0.1));
+            border-color: var(--rg-red);
+            box-shadow: 0 0 22px rgba(220, 53, 69, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .rg-service-card:hover .rg-service-icon i {
+            transform: scale(1.12);
         }
 
         .rg-marketing-card {
@@ -768,6 +1093,9 @@
             .rg-price { font-size: 2rem; }
             .rg-card { border-radius: 12px; }
             .rg-service-card { padding: 1.5rem !important; }
+            .rg-service-card .rg-service-head { min-height: 132px; }
+            .rg-service-card .rg-service-title { min-height: 2.6em; font-size: 1.1rem; }
+            .rg-service-card .rg-service-price-box { min-height: 80px; margin-bottom: 16px; }
             .rg-step { padding: 20px 15px; }
             .rg-step-number { width: 45px; height: 45px; font-size: 1.1rem; }
             .rg-step h4 { font-size: 1rem; }
@@ -880,7 +1208,10 @@
 
         @media (prefers-reduced-motion: reduce) {
             .rg-animate { animation: none; }
-            .rg-card, .rg-btn-primary, .rg-btn-outline, .rg-time-slot { transition: none; }
+            .rg-reveal { opacity: 1 !important; transform: none !important; transition: none; }
+            .rg-card, .rg-btn-primary, .rg-btn-outline, .rg-time-slot, .rg-service-icon { transition: none; }
+            html { scroll-behavior: auto; }
+            .rg-card::before, .rg-card:hover::before { transform: none; }
         }
 
         @media print {
@@ -891,6 +1222,9 @@
     </style>
 </head>
 <body>
+
+    <!-- Barra de progresso de leitura -->
+    <div class="rg-scroll-progress" id="scrollProgress"></div>
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top rg-navbar">
@@ -918,6 +1252,7 @@
 
     <!-- Hero Section -->
     <section id="home" class="rg-hero d-flex align-items-center">
+        <div class="rg-grid"></div>
         <i class="bi bi-car-front-fill rg-car-icon"></i>
         <div class="container py-5">
             <div class="row align-items-center">
@@ -997,187 +1332,187 @@
                 <!-- Lavagem Simples -->
                 <div class="col-lg-4 col-md-6">
                     <div class="card rg-card rg-service-card h-100 p-4">
-                        <div class="rg-service-icon">
-                            <i class="bi bi-droplet"></i>
+                        <div class="rg-service-body">
+                            <div class="rg-service-icon"><i class="bi bi-droplet"></i></div>
+                            <div class="rg-service-head">
+                                <h3 class="rg-service-title">Lavagem Simples</h3>
+                                <p class="rg-service-desc">Exterior - R�pida e eficiente</p>
+                            </div>
+                            <div class="rg-service-price-box">
+                                <div class="rg-price">R$ 39<small>,90</small></div>
+                                <small class="text-secondary">Dura��o: ~30 min</small>
+                            </div>
+                            <ul class="rg-feature-list mb-4">
+                                <li><i class="bi bi-check-circle-fill"></i> Lavagem externa completa</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Secagem com ar quente</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Limpeza de vidros</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Pneus com brilho</li>
+                            </ul>
+                            <a href="#agendar" class="btn rg-btn-outline w-100 rg-service-cta" onclick="selectService('basica')">SELECIONAR</a>
                         </div>
-                        <div class="text-center mb-4">
-                            <h3 class="fw-bold mt-3">Lavagem Simples</h3>
-                            <p class="text-secondary">Exterior - Rápida e eficiente</p>
-                        </div>
-                        <div class="text-center mb-4">
-                            <div class="rg-price">R$ 39<small>,90</small></div>
-                            <small class="text-secondary">Duração: ~30 min</small>
-                        </div>
-                        <ul class="rg-feature-list mb-4">
-                            <li><i class="bi bi-check-circle-fill"></i> Lavagem externa completa</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Secagem com ar quente</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Limpeza de vidros</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Pneus com brilho</li>
-                        </ul>
-                        <a href="#agendar" class="btn rg-btn-outline w-100" onclick="selectService('basica')">SELECIONAR</a>
                     </div>
                 </div>
                 <!-- Lavagem Completa -->
                 <div class="col-lg-4 col-md-6">
                     <div class="card rg-card rg-service-card featured h-100 p-4">
-                        <div class="rg-service-icon">
-                            <i class="bi bi-stars"></i>
+                        <div class="rg-service-body">
+                            <div class="rg-service-icon"><i class="bi bi-stars"></i></div>
+                            <div class="rg-service-head">
+                                <h3 class="rg-service-title">Lavagem Completa</h3>
+                                <p class="rg-service-desc">Externa e Interna - O equil�brio perfeito</p>
+                            </div>
+                            <div class="rg-service-price-box">
+                                <div class="rg-price">R$ 79<small>,90</small></div>
+                                <small class="text-secondary">Dura��o: ~1h</small>
+                            </div>
+                            <ul class="rg-feature-list mb-4">
+                                <li><i class="bi bi-check-circle-fill"></i> Tudo da Lavagem Simples</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Limpeza interna detalhada</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Higieniza��o de bancos</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Limpeza de painel e pl�sticos</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Aromatiza��o</li>
+                            </ul>
+                            <a href="#agendar" class="btn rg-btn-primary w-100 rg-service-cta" onclick="selectService('completa')">SELECIONAR</a>
                         </div>
-                        <div class="text-center mb-4">
-                            <h3 class="fw-bold mt-3">Lavagem Completa</h3>
-                            <p class="text-secondary">Externa e Interna - O equilíbrio perfeito</p>
-                        </div>
-                        <div class="text-center mb-4">
-                            <div class="rg-price">R$ 79<small>,90</small></div>
-                            <small class="text-secondary">Duração: ~1h</small>
-                        </div>
-                        <ul class="rg-feature-list mb-4">
-                            <li><i class="bi bi-check-circle-fill"></i> Tudo da Lavagem Simples</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Limpeza interna detalhada</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Higienização de bancos</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Limpeza de painel e plásticos</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Aromatização</li>
-                        </ul>
-                        <a href="#agendar" class="btn rg-btn-primary w-100" onclick="selectService('completa')">SELECIONAR</a>
                     </div>
                 </div>
-                <!-- Hidratação -->
+                <!-- Hidrata��o -->
                 <div class="col-lg-4 col-md-6">
                     <div class="card rg-card rg-service-card h-100 p-4">
-                        <div class="rg-service-icon">
-                            <i class="bi bi-moisture"></i>
+                        <div class="rg-service-body">
+                            <div class="rg-service-icon"><i class="bi bi-moisture"></i></div>
+                            <div class="rg-service-head">
+                                <h3 class="rg-service-title">Hidrata��o</h3>
+                                <p class="rg-service-desc">Bancos e Pneus</p>
+                            </div>
+                            <div class="rg-service-price-box">
+                                <div class="rg-price">R$ 49<small>,90</small></div>
+                                <small class="text-secondary">Dura��o: ~45 min</small>
+                            </div>
+                            <ul class="rg-feature-list mb-4">
+                                <li><i class="bi bi-check-circle-fill"></i> Hidrata��o de bancos de couro</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Tratamento de pneus</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Condicionador de pl�sticos</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Prote��o UV</li>
+                            </ul>
+                            <a href="#agendar" class="btn rg-btn-outline w-100 rg-service-cta" onclick="selectService('hidratacao')">SELECIONAR</a>
                         </div>
-                        <div class="text-center mb-4">
-                            <h3 class="fw-bold mt-3">Hidratação</h3>
-                            <p class="text-secondary">Bancos e Pneus</p>
-                        </div>
-                        <div class="text-center mb-4">
-                            <div class="rg-price">R$ 49<small>,90</small></div>
-                            <small class="text-secondary">Duração: ~45 min</small>
-                        </div>
-                        <ul class="rg-feature-list mb-4">
-                            <li><i class="bi bi-check-circle-fill"></i> Hidratação de bancos de couro</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Tratamento de pneus</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Condicionador de plásticos</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Proteção UV</li>
-                        </ul>
-                        <a href="#agendar" class="btn rg-btn-outline w-100" onclick="selectService('hidratacao')">SELECIONAR</a>
                     </div>
                 </div>
                 <!-- Limpeza de Estofados -->
                 <div class="col-lg-4 col-md-6">
                     <div class="card rg-card rg-service-card h-100 p-4">
-                        <div class="rg-service-icon">
-                            <i class="bi bi-layers"></i>
+                        <div class="rg-service-body">
+                            <div class="rg-service-icon"><i class="bi bi-layers"></i></div>
+                            <div class="rg-service-head">
+                                <h3 class="rg-service-title">Limpeza de Estofados</h3>
+                                <p class="rg-service-desc">Tapetes e Bancos</p>
+                            </div>
+                            <div class="rg-service-price-box">
+                                <div class="rg-price">R$ 59<small>,90</small></div>
+                                <small class="text-secondary">Dura��o: ~1h</small>
+                            </div>
+                            <ul class="rg-feature-list mb-4">
+                                <li><i class="bi bi-check-circle-fill"></i> Limpeza profunda de estofados</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Remo��o de manchas</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Limpeza de tapetes</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Sanitiza��o completa</li>
+                            </ul>
+                            <a href="#agendar" class="btn rg-btn-outline w-100 rg-service-cta" onclick="selectService('estofados')">SELECIONAR</a>
                         </div>
-                        <div class="text-center mb-4">
-                            <h3 class="fw-bold mt-3">Limpeza de Estofados</h3>
-                            <p class="text-secondary">Tapetes e Bancos</p>
-                        </div>
-                        <div class="text-center mb-4">
-                            <div class="rg-price">R$ 59<small>,90</small></div>
-                            <small class="text-secondary">Duração: ~1h</small>
-                        </div>
-                        <ul class="rg-feature-list mb-4">
-                            <li><i class="bi bi-check-circle-fill"></i> Limpeza profunda de estofados</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Remoção de manchas</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Limpeza de tapetes</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Sanitização completa</li>
-                        </ul>
-                        <a href="#agendar" class="btn rg-btn-outline w-100" onclick="selectService('estofados')">SELECIONAR</a>
                     </div>
                 </div>
                 <!-- Polimento -->
                 <div class="col-lg-4 col-md-6">
                     <div class="card rg-card rg-service-card h-100 p-4">
-                        <div class="rg-service-icon">
-                            <i class="bi bi-gem"></i>
+                        <div class="rg-service-body">
+                            <div class="rg-service-icon"><i class="bi bi-gem"></i></div>
+                            <div class="rg-service-head">
+                                <h3 class="rg-service-title">Polimento e Enceramento</h3>
+                                <p class="rg-service-desc">Detailing profissional</p>
+                            </div>
+                            <div class="rg-service-price-box">
+                                <div class="rg-price">R$ 199<small>,90</small></div>
+                                <small class="text-secondary">Dura��o: ~3h</small>
+                            </div>
+                            <ul class="rg-feature-list mb-4">
+                                <li><i class="bi bi-check-circle-fill"></i> Polimento de pintura</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Enceramento premium</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Remo��o de riscos leves</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Prote��o de longa dura��o</li>
+                            </ul>
+                            <a href="#agendar" class="btn rg-btn-outline w-100 rg-service-cta" onclick="selectService('polimento')">SELECIONAR</a>
                         </div>
-                        <div class="text-center mb-4">
-                            <h3 class="fw-bold mt-3">Polimento e Enceramento</h3>
-                            <p class="text-secondary">Detailing profissional</p>
-                        </div>
-                        <div class="text-center mb-4">
-                            <div class="rg-price">R$ 199<small>,90</small></div>
-                            <small class="text-secondary">Duração: ~3h</small>
-                        </div>
-                        <ul class="rg-feature-list mb-4">
-                            <li><i class="bi bi-check-circle-fill"></i> Polimento de pintura</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Enceramento premium</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Remoção de riscos leves</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Proteção de longa duração</li>
-                        </ul>
-                        <a href="#agendar" class="btn rg-btn-outline w-100" onclick="selectService('polimento')">SELECIONAR</a>
                     </div>
                 </div>
-                <!-- Lavagem Ecológica -->
+                <!-- Lavagem Ecol�gica -->
                 <div class="col-lg-4 col-md-6">
                     <div class="card rg-card rg-service-card h-100 p-4">
-                        <div class="rg-service-icon">
-                            <i class="bi bi-leaf"></i>
+                        <div class="rg-service-body">
+                            <div class="rg-service-icon"><i class="bi bi-leaf"></i></div>
+                            <div class="rg-service-head">
+                                <h3 class="rg-service-title">Lavagem Ecol�gica</h3>
+                                <p class="rg-service-desc">Produtos biodegrad�veis</p>
+                            </div>
+                            <div class="rg-service-price-box">
+                                <div class="rg-price">R$ 59<small>,90</small></div>
+                                <small class="text-secondary">Dura��o: ~45 min</small>
+                            </div>
+                            <ul class="rg-feature-list mb-4">
+                                <li><i class="bi bi-check-circle-fill"></i> Produtos biodegrad�veis</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Economia de �gua</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Sem qu�micos agressivos</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Seguro para o meio ambiente</li>
+                            </ul>
+                            <a href="#agendar" class="btn rg-btn-outline w-100 rg-service-cta" onclick="selectService('ecologica')">SELECIONAR</a>
                         </div>
-                        <div class="text-center mb-4">
-                            <h3 class="fw-bold mt-3">Lavagem Ecológica</h3>
-                            <p class="text-secondary">Produtos biodegradáveis</p>
-                        </div>
-                        <div class="text-center mb-4">
-                            <div class="rg-price">R$ 59<small>,90</small></div>
-                            <small class="text-secondary">Duração: ~45 min</small>
-                        </div>
-                        <ul class="rg-feature-list mb-4">
-                            <li><i class="bi bi-check-circle-fill"></i> Produtos biodegradáveis</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Economia de água</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Sem químicos agressivos</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Seguro para o meio ambiente</li>
-                        </ul>
-                        <a href="#agendar" class="btn rg-btn-outline w-100" onclick="selectService('ecologica')">SELECIONAR</a>
                     </div>
                 </div>
-                <!-- Lavagem Móvel -->
+                <!-- Lavagem M�vel -->
                 <div class="col-lg-4 col-md-6">
                     <div class="card rg-card rg-service-card h-100 p-4">
-                        <div class="rg-service-icon">
-                            <i class="bi bi-truck"></i>
+                        <div class="rg-service-body">
+                            <div class="rg-service-icon"><i class="bi bi-truck"></i></div>
+                            <div class="rg-service-head">
+                                <h3 class="rg-service-title">Lavagem M�vel</h3>
+                                <p class="rg-service-desc">N�s vamos at� voc�</p>
+                            </div>
+                            <div class="rg-service-price-box">
+                                <div class="rg-price">R$ 89<small>,90</small></div>
+                                <small class="text-secondary">Dura��o: ~1h</small>
+                            </div>
+                            <ul class="rg-feature-list mb-4">
+                                <li><i class="bi bi-check-circle-fill"></i> Atendimento no seu local</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Equipe completa</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Todos os equipamentos</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Sem sair de casa</li>
+                            </ul>
+                            <a href="#agendar" class="btn rg-btn-outline w-100 rg-service-cta" onclick="selectService('movel')">SELECIONAR</a>
                         </div>
-                        <div class="text-center mb-4">
-                            <h3 class="fw-bold mt-3">Lavagem Móvel</h3>
-                            <p class="text-secondary">Nós vamos até você</p>
-                        </div>
-                        <div class="text-center mb-4">
-                            <div class="rg-price">R$ 89<small>,90</small></div>
-                            <small class="text-secondary">Duração: ~1h</small>
-                        </div>
-                        <ul class="rg-feature-list mb-4">
-                            <li><i class="bi bi-check-circle-fill"></i> Atendimento no seu local</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Equipe completa</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Todos os equipamentos</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Sem sair de casa</li>
-                        </ul>
-                        <a href="#agendar" class="btn rg-btn-outline w-100" onclick="selectService('movel')">SELECIONAR</a>
                     </div>
                 </div>
                 <!-- Premium -->
                 <div class="col-lg-4 col-md-6">
                     <div class="card rg-card rg-service-card h-100 p-4">
-                        <div class="rg-service-icon">
-                            <i class="bi bi-trophy"></i>
+                        <div class="rg-service-body">
+                            <div class="rg-service-icon"><i class="bi bi-trophy"></i></div>
+                            <div class="rg-service-head">
+                                <h3 class="rg-service-title">Lavagem Premium</h3>
+                                <p class="rg-service-desc">O melhor para o seu carro</p>
+                            </div>
+                            <div class="rg-service-price-box">
+                                <div class="rg-price">R$ 149<small>,90</small></div>
+                                <small class="text-secondary">Dura��o: ~2h30</small>
+                            </div>
+                            <ul class="rg-feature-list mb-4">
+                                <li><i class="bi bi-check-circle-fill"></i> Tudo da Lavagem Completa</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Polimento de far�is</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Cer�mica l�quida</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Limpeza de motor</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Tratamento de couro</li>
+                            </ul>
+                            <a href="#agendar" class="btn rg-btn-outline w-100 rg-service-cta" onclick="selectService('premium')">SELECIONAR</a>
                         </div>
-                        <div class="text-center mb-4">
-                            <h3 class="fw-bold mt-3">Lavagem Premium</h3>
-                            <p class="text-secondary">O melhor para o seu carro</p>
-                        </div>
-                        <div class="text-center mb-4">
-                            <div class="rg-price">R$ 149<small>,90</small></div>
-                            <small class="text-secondary">Duração: ~2h30</small>
-                        </div>
-                        <ul class="rg-feature-list mb-4">
-                            <li><i class="bi bi-check-circle-fill"></i> Tudo da Lavagem Completa</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Polimento de faróis</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Cerâmica líquida</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Limpeza de motor</li>
-                            <li><i class="bi bi-check-circle-fill"></i> Tratamento de couro</li>
-                        </ul>
-                        <a href="#agendar" class="btn rg-btn-outline w-100" onclick="selectService('premium')">SELECIONAR</a>
                     </div>
                 </div>
             </div>
@@ -1754,6 +2089,9 @@
             setMinDate();
             updateStats();
             startPromoTimer();
+            initScrollProgress();
+            initRevealOnScroll();
+            initActiveNavHighlight();
         });
 
         // Event Listeners
@@ -1764,6 +2102,82 @@
             document.getElementById('filterDate').addEventListener('change', renderBookingsTable);
             document.getElementById('filterStatus').addEventListener('change', renderBookingsTable);
             document.getElementById('filterService').addEventListener('change', renderBookingsTable);
+        }
+
+        // ========== MELHORIAS DE EST�TICA / UX ==========
+
+        // Barra de progresso de leitura no topo
+        function initScrollProgress() {
+            const bar = document.getElementById('scrollProgress');
+            if (!bar) return;
+
+            function update() {
+                const doc = document.documentElement;
+                const total = doc.scrollHeight - doc.clientHeight;
+                const pct = total > 0 ? (doc.scrollTop / total) * 100 : 0;
+                bar.style.width = pct + '%';
+            }
+
+            window.addEventListener('scroll', update, { passive: true });
+            window.addEventListener('resize', update);
+            update();
+        }
+
+        // Revela elementos ao entrarem na viewport
+        function initRevealOnScroll() {
+            const selector = '.rg-service-card, .rg-marketing-card, .rg-loyalty-card, .rg-reveal';
+            const targets = document.querySelectorAll(selector);
+            if (!targets.length) return;
+
+            // Respeita usu�rios que preferem menos movimento
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                targets.forEach(el => el.classList.add('rg-visible'));
+                return;
+            }
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const el = entry.target;
+                        // Cascata suave entre elementos da mesma linha
+                        const siblings = Array.from(el.parentElement ? el.parentElement.children : []);
+                        const delay = Math.min(siblings.indexOf(el), 5) * 70;
+                        setTimeout(() => el.classList.add('rg-visible'), delay);
+                        observer.unobserve(el);
+                    }
+                });
+            }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+
+            targets.forEach(el => {
+                el.classList.add('rg-reveal');
+                observer.observe(el);
+            });
+        }
+
+        // Destaca o link da navbar da se��o vis�vel
+        function initActiveNavHighlight() {
+            const links = document.querySelectorAll('.rg-nav-link');
+            const sections = document.querySelectorAll('section[id]');
+            if (!links.length || !sections.length) return;
+
+            function update() {
+                const offset = 140;
+                let currentId = sections[0].id;
+
+                sections.forEach(section => {
+                    if (section.getBoundingClientRect().top - offset <= 0) {
+                        currentId = section.id;
+                    }
+                });
+
+                links.forEach(link => {
+                    const isActive = link.getAttribute('href') === '#' + currentId;
+                    link.classList.toggle('active', isActive);
+                });
+            }
+
+            window.addEventListener('scroll', update, { passive: true });
+            update();
         }
 
         // Set minimum date to today
